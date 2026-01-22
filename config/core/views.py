@@ -209,3 +209,70 @@ def ProyectosTareas(request, id=None):
 
 	# defult
 	return JsonResponse({'mensaje':'Metodo no permitido'}, status=405)
+
+
+# para conectar las tareas de los proyectos con usuarios 
+@csrf_exempt
+def UsuariosTareas(request, id=None):
+
+	# Get ALL
+	# TareaUsuario
+	if request.method == 'GET' and id is None:
+		registros = TareaUsuario.objects.select_related(
+			'usuario',
+			'proyecto_tarea__proyecto',
+			'proyecto_tarea__tarea'
+			)
+
+		data = []
+		for r in registros:
+			data.append({
+				'id':r.id,
+				'usuario':r.usuario.username,
+				'proyecto':r.proyecto_tarea.proyecto.nombre,
+				'tarea':r.proyecto_tarea.tarea.titulo,
+				'prioridad':r.proyecto_tarea.prioridad,
+				'tiempo_dedicado':float(r.tiempo_dedicado),
+				'completada':r.completada,
+				'fecha_creacion':r.fecha_creacion
+				})
+		return JsonResponse(data, safe=False)
+
+
+	# Get con filtro
+	if request.method == 'GET' and id is not None:
+		registros = TareaUsuario.objects.select_related(
+			'usuario',
+			'proyecto_tarea__proyecto',
+			'proyecto_tarea__tarea'
+			).filter(proyecto_tarea_id=id)
+
+		data = []
+		for r in registros:
+			data.append({
+				'id':r.id,
+				'usuario':r.usuario.username,
+				'proyecto':r.proyecto_tarea.proyecto.nombre,
+				'tarea':r.proyecto_tarea.tarea.titulo,
+				'prioridad':r.proyecto_tarea.prioridad,
+				'tiempo_dedicado':float(r.tiempo_dedicado),
+				'completada':r.completada,
+				'fecha_creacion':r.fecha_creacion
+				})
+		return JsonResponse(data, safe=False)	
+
+
+
+	# Post para registrar un usuario con una tarea
+	if request.method == 'POST':
+		data = json.loads(request.body)
+		t = TareaUsuario.objects.create(
+			proyecto_tarea_id = data['proyecto_tarea'],
+			usuario_id=data['usuario'],
+			tiempo_dedicado =data.get('tiempo_dedicado',1),
+			completada =data.get('completada',False)
+			)
+		return JsonResponse({'id':t.id})
+
+		# defult
+	return JsonResponse({'mensaje':'Metodo no permitido'}, status=405)

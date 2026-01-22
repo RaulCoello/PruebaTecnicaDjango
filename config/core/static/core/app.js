@@ -326,13 +326,10 @@ async function cargarProyectosTareas(id) {
                     >
                     Eliminar
                     </button>
-                    <button class="btn btn-sm btn-primary me-2"
-                        
-                    >
-                    Usuarios
-                    </button>
                 </td>
             `;
+            tr.onclick = () => seleccionTareaProyecto(p.id,p.tarea_titulo);
+            
             //onclick="eliminarProyecto(${p.id})"
             tbody.appendChild(tr);
       });
@@ -391,6 +388,60 @@ async function eliminarTareaProyecto(id, idProyecto){
 
     
 }
+
+async function seleccionTareaProyecto(id,Tarea){
+
+    // cargar los usuarios de esa tarea
+    cargarTareasUsuarios(id);
+    const h3 = document.getElementById('titleUsuariosTareas');
+    h3.textContent = `Usuarios Tarea: ${Tarea}`;
+
+    //tambien hacer que aparezca el formulario para registrar un nuevo usuario en la tarea
+}
+
+// Para gestionar las tareas por usuario------------------------------------
+
+// Cargar los usuarios de dicha tarea
+async function cargarTareasUsuarios(id) {
+
+  mostrarLoader();
+  await sleep(1000); // efecto visual
+
+  fetch(`/api/usuariostareas/${id}/`)
+    .then((res) => res.json())
+    .then((data) => {
+      const tbody = document.getElementById("tabletareasusuarios");
+      tbody.innerHTML = "";
+
+      data.forEach((p) => {
+            const tr= document.createElement("tr");
+            tr.innerHTML = `
+                <td>${p.id}</td>
+                <td class="container">
+                        <p class="fw-bold">${p.usuario}</p>
+                        <p><span class="fw-bold">Prioridad:</span> ${p.prioridad}</p>
+                        ${p.completada ? '<span class="fw-bold">Completada</span>':'<span>No Completada:</span>'}
+                        <p>${p.fecha_creacion}</p>
+                </td>
+                <td class="d-flex flex-column gap-2">
+                    <button class="btn btn-sm btn-danger me-2"
+                        onclick="eliminarTareaProyecto(${p.id})"
+                    >
+                    Eliminar
+                    </button>
+                </td>
+            `;
+            //onclick="eliminarProyecto(${p.id})"
+            tbody.appendChild(tr);
+      });
+    })
+    .finally(() => ocultarLoader());
+}
+
+
+
+
+
 
 // ---- INICIAL ----
 cargarProyectos();

@@ -12,5 +12,7 @@ urlpatterns = [
 	path('api/tareas/',views.Tareas),
 	path('api/tareas/<int:id>/',views.Tareas),
 	path('api/proyectostareas/',views.ProyectosTareas),
-	path('api/proyectostareas/<int:id>/',views.ProyectosTareas)
+	path('api/proyectostareas/<int:id>/',views.ProyectosTareas),
+	path('api/usuariostareas/',views.UsuariosTareas),
+	path('api/usuariostareas/<int:id>/',views.UsuariosTareas)
 ]

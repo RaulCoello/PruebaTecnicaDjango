@@ -1,0 +1,118 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+ <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Tareas</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Loader central */
+      #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body class="container mt-4">
+  	<h2 class="text-center">Gestión de Tareas</h2>
+    <!-- Loader -->
+    <div id="loader">
+      <div class="text-center">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2">Cargando...</p>
+      </div>
+    </div>
+  	<div class="container ">
+  		<div class="row">
+    		<div class="col">
+      			<h3 class="text-center fw-bold">Proyectos</h3>
+      			<div class="container">
+      				<form id="formProyecto">
+  						<div class="mb-3">
+    						<label for="nombreProyecto" class="form-label">Nombre</label>
+    						<input type="text" class="form-control" id="nombreProyecto" >
+    
+  						</div>
+  						<div class="mb-3">
+    						<label for="descripcionProyecto" class="form-label">Descripcion</label>
+    						<input type="text" class="form-control" id="descripcionProyecto">
+  						</div>
+  
+  						<button type="submit" class="btn btn-primary">Crear</button>
+					</form>
+      			</div>
+      			<div class="container">
+      				<table class="table table-bordered table-sm mt-3">
+          			<thead class="table-dark">
+            		<tr>
+              		<th>ID</th>
+              		<th>Datos</th>
+              		<th>Acciones</th>
+            		</tr>
+          			</thead>
+          			<tbody id="tableproyectos"></tbody>
+        			</table>
+      			</div>
+    		</div>
+    		<div class="col">
+      			<h3 class="text-center fw-bold">Tareas</h3>
+      			<div class="container">
+      				<form id="formTarea">
+  						<div class="mb-3">
+    						<label for="tituloTarea" class="form-label">Titulo</label>
+    						<input type="text" class="form-control" id="tituloTarea" >
+    
+  						</div>
+  						<div class="mb-3">
+    						<label for="instruccionTarea" class="form-label">Instrucciones</label>
+    						<input type="text" class="form-control" id="instruccionTarea">
+  						</div>
+  
+  						<button type="submit" class="btn btn-primary">Crear</button>
+					</form>
+      			</div>
+      			 <div class="container">
+      					<table class="table table-bordered table-sm mt-3">
+          					<thead class="table-dark">
+            				<tr>
+              				<th>ID</th>
+              				<th>Datos</th>
+              				<th>Acciones</th>
+            				</tr>
+          				</thead>
+          					<tbody id="tabletareas"></tbody>
+        				</table>
+      			</div>
+    		</div>
+  		</div>
+	</div>
+  <div class="container ">
+    <h3 class="fw-bold" id="titleTareasProyectos">Tareas:</h3>
+    <div class="container">
+      <table class="table table-bordered table-sm mt-3">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Datos</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabletareasproyectos"></tbody>
+      </table>
+    </div>
+  </div>
+	<!--PARA LAS FUNCIONES-->
+	    <script src="{% static 'core/app.js' %}"></script>
+  </body>
+</html>
